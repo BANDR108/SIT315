@@ -1,0 +1,35 @@
+int tempSensorPin = A0; // Analog input pin for temperature sensor
+int externalLedPin = 9; // External LED pin
+float temperature;
+
+void setup() {
+  pinMode(externalLedPin, OUTPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  // Read the analog value from the temperature sensor
+  int sensorValue = analogRead(tempSensorPin);
+  
+  // Convert the analog value to voltage
+  float voltage = sensorValue * (5.0 / 1024.0);
+  
+  // Convert the voltage to temperature in Celsius
+  temperature = (voltage - 0.5) * 100;
+  
+  // Print the temperature to the Serial Monitor
+  Serial.print("Temperature: ");
+  Serial.print(temperature);
+  Serial.println(" C");
+  
+  // If temperature exceeds a certain threshold, turn on the external LED
+  if (temperature > 30) { // Example threshold temperature of 30°C
+    digitalWrite(externalLedPin, HIGH);
+    Serial.println("Temperature too high: LED ON");
+  } else {
+    digitalWrite(externalLedPin, LOW);
+    Serial.println("Temperature normal: LED OFF");
+  }
+  
+  delay(1000); // Wait for 1 second before next reading
+}
